@@ -7,11 +7,14 @@ import { ReactComponent as TitleIcon } from '../icons/vivid-angle-top-left.svg'
 import theme from '../style/theme'
 import Event from './Event'
 
-const WrappEvents = ({ classes, title, children }) => (
-  <div className={classes.container}>
-    {title}
-    {children}
-  </div>
+
+// wrapp component with handler to check error if not return children
+const WrappEventsErrorHandler = ({ error, classes, children }) => (
+  error ? (
+    <div className={classes.errorMessage}>
+      Oops! Something went wrong!
+    </div>
+  ) : children
 )
 
 const Events = () => {
@@ -20,25 +23,12 @@ const Events = () => {
   const events = useSelector(getEvents)
   const error = useSelector(getEventsError)
 
-  if (error) {
-    return (
-      <WrappEvents classes={classes}>
-        <div className={classes.errorMessage}>
-          Oops! Something went wrong!
-        </div>
-      </WrappEvents>
-    )
-  }
   return (
-    <WrappEvents
-      classes={classes}
-      title={
-        <h3 className={classes.title}>
-          <TitleIcon className={classes.titleIcon} />
-          {`Results: ${events.length} Events Found`}
-        </h3>
-      }
-    >
+    <WrappEventsErrorHandler error={error} classes={classes}>
+      <h3 className={classes.title}>
+        <TitleIcon className={classes.titleIcon} />
+        {`Results: ${events.length} Events Found`}
+      </h3>
       {!ready && <div className={classes.centerScreen}>  <Circle size={40} /> </div>}
       {ready && (
         <div className={classes.tilesWrapper}>
@@ -47,7 +37,7 @@ const Events = () => {
           </div>
         </div>
       )}
-    </WrappEvents>
+    </WrappEventsErrorHandler>
   )
 }
 
