@@ -7,7 +7,6 @@ import { ReactComponent as TitleIcon } from '../icons/vivid-angle-top-left.svg'
 import theme from '../style/theme'
 import Event from './Event'
 
-
 // wrapp component with handler to check error if not return children
 const WrappEventsErrorHandler = ({ error, classes, children }) => (
   error ? (

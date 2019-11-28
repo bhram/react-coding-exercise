@@ -85,7 +85,7 @@ async function render (req, { clientStats, serverStats }) {
     <ReduxProvider store={store}>
       <JssProvider registry={sheets}>
         <App />
-      </JssProvider>
+      </JssProvider>x
     </ReduxProvider>
   )
   const css = toCSS(sheets)

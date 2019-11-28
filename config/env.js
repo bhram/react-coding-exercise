@@ -78,8 +78,14 @@ function getClientEnvironment(publicUrl) {
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
 
+        // session secret key for server
+        SESSION_SECRET:'random-topsecret',
+
         // add event api route 
         EVENTS_API_URL: 'api/events',
+        
+        // favourites api route 
+        FAVOURITES_API_URL: 'api/favourites',
       }
     )
   // Stringify all values so we can feed into Webpack DefinePlugin

@@ -2,8 +2,8 @@ import React, { useCallback, useMemo } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useDispatch, useSelector } from 'react-redux'
 import classNames from 'classnames'
-import { createIsFavouritedSelector } from '../selectors'
-import { toggleFavouriteActionCreator } from '../actions'
+import { createIsFavouritedSelector, getFavouritesApiUrl } from '../selectors'
+import { toggleFavouriteActionCreator, putFavourite, deleteFavourite } from '../actions'
 import theme from '../style/theme'
 import { ReactComponent as FacebookIcon } from '../icons/facebook.svg'
 import { ReactComponent as TwitterIcon } from '../icons/twitter.svg'
@@ -26,10 +26,16 @@ const ShareButtons = ({ children, className, id, url, title }) => {
   const classes = useStyles()
   const isFavouritedSelector = useCallback(createIsFavouritedSelector(id), [id])
   const isFavourited = useSelector(isFavouritedSelector)
+  const favouritesApiUrl = useSelector(getFavouritesApiUrl)
   const dispatch = useDispatch()
   const toggleFavourited = useCallback(() => {
+    if (!isFavourited) {
+      putFavourite(favouritesApiUrl, id)
+    } else {
+      deleteFavourite(favouritesApiUrl, id)
+    }
     dispatch(toggleFavouriteActionCreator(id))
-  }, [id])
+  }, [dispatch, favouritesApiUrl, id, isFavourited])
 
   const social = useMemo(() => [{
     ...popupWindowProps(`https://facebook.com/sharer.php?u=${encodeURIComponent(url)}&t=${encodeURIComponent(title)}`),
