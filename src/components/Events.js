@@ -2,22 +2,43 @@ import React from 'react'
 import { createUseStyles } from 'react-jss'
 import { useSelector } from 'react-redux'
 import { Circle } from 'better-react-spinkit'
-import { getEvents, isEventsReady } from '../selectors'
+import { getEvents, isEventsReady, getEventsError } from '../selectors'
 import { ReactComponent as TitleIcon } from '../icons/vivid-angle-top-left.svg'
 import theme from '../style/theme'
 import Event from './Event'
+
+const WrappEvents = ({ classes, title, children }) => (
+  <div className={classes.container}>
+    {title}
+    {children}
+  </div>
+)
 
 const Events = () => {
   const classes = useStyles()
   const ready = useSelector(isEventsReady)
   const events = useSelector(getEvents)
+  const error = useSelector(getEventsError)
 
+  if (error) {
+    return (
+      <WrappEvents classes={classes}>
+        <div className={classes.errorMessage}>
+          Oops! Something went wrong!
+        </div>
+      </WrappEvents>
+    )
+  }
   return (
-    <div className={classes.container}>
-      <h3 className={classes.title}>
-        <TitleIcon className={classes.titleIcon} />
-        {`Results: ${events.length} Events Found`}
-      </h3>
+    <WrappEvents
+      classes={classes}
+      title={
+        <h3 className={classes.title}>
+          <TitleIcon className={classes.titleIcon} />
+          {`Results: ${events.length} Events Found`}
+        </h3>
+      }
+    >
       {!ready && <div className={classes.centerScreen}>  <Circle size={40} /> </div>}
       {ready && (
         <div className={classes.tilesWrapper}>
@@ -26,7 +47,7 @@ const Events = () => {
           </div>
         </div>
       )}
-    </div>
+    </WrappEvents>
   )
 }
 
@@ -80,6 +101,12 @@ const useStyles = createUseStyles({
     position: 'fixed',
     top: '50%',
     left: '50%'
+  },
+
+  errorMessage: {
+    backgroundColor: '#ff7272',
+    color: '#fff',
+    padding: '1em'
   }
 }, { name: 'Events' })
 
