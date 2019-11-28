@@ -1,6 +1,7 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 import { useSelector } from 'react-redux'
+import { Circle } from 'better-react-spinkit'
 import { getEvents, isEventsReady } from '../selectors'
 import { ReactComponent as TitleIcon } from '../icons/vivid-angle-top-left.svg'
 import theme from '../style/theme'
@@ -17,7 +18,7 @@ const Events = () => {
         <TitleIcon className={classes.titleIcon} />
         {`Results: ${events.length} Events Found`}
       </h3>
-      {!ready && <p>Loading...</p>}
+      {!ready && <div className={classes.centerScreen}>  <Circle size={40} /> </div>}
       {ready && (
         <div className={classes.tilesWrapper}>
           <div className={classes.tiles}>
@@ -73,6 +74,12 @@ const useStyles = createUseStyles({
     '@media (min-width: 1200px)': {
       width: `calc(${100 / 3}% - ${theme.gutter}px)`
     }
+  },
+
+  centerScreen: {
+    position: 'fixed',
+    top: '50%',
+    left: '50%'
   }
 }, { name: 'Events' })
 
